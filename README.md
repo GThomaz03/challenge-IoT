@@ -33,29 +33,43 @@ Nossa solução se destaca por sua viabilidade técnica. A instalação de câme
 
 ## Passos para Configuração e Execução
 ### Instalação de Dependências:
+Clone o repositório
+```
+   git clone https://github.com/GThomaz03/challenge-IoT
+   cd challenge-IoT
+```
+
+Crie e ative um ambiente virtual
+
+Windows:
+```
+   python -m venv venv
+   venv/Scripts/activate
+```
+
+Linux/macOS
+```
+   python3 -m venv venv
+   source venv/bin/activate
+```
 
 Assegure que você está no diretório raiz do projeto e execute:
 ```
    pip install -r requirements.txt
 ```
 
-Isso instalará todas as dependências necessárias definidas no requirements.txt.
-
-
-### carregamento do modelo
 Caso não tenha o Yolov5s intalado em sua máquina, execute:
 ```
    git clone https://github.com/ultralytics/yolov5
    cd yolov5
    pip install -r requirements.txt
-
 ```
 
-
-### Executar o Programa:
+Executar o Programa:
 
 Para rodar a aplicação principal, utilize o comando:
 ```
+   cd..
    python App.py
 ```
 
