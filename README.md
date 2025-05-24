@@ -69,7 +69,7 @@ Executar o Programa:
 
 Para rodar a aplicação principal, utilize o comando:
 ```
-   cd..
+   cd ..
    python App.py
 ```
 
