@@ -2,6 +2,10 @@
 
 link do vído no YouTube: https://youtu.be/dWUZyVhUMdw
 
+## Integrantes
+ - Eduardo Guilherme Dias- RM557886
+ - Gabriel Alves Thomaz - RM558637
+ - Luiz Sadao Kamada - RM557652
 
 ## 🎯 Apresentação do Problema
 A Mottu enfrenta um grande desafio na **gestão e organização de seus pátios**. Atualmente, a localização das motos é feita de forma **manual**, o que gera:
