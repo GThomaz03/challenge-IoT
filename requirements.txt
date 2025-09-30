@@ -3,3 +3,7 @@ torchvision
 torchaudio
 opencv-python
 pandas
+ultralytics
+uvicorn
+deep_sort_realtime
+streamlit-autorefresh
