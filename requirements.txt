@@ -7,3 +7,5 @@ ultralytics
 uvicorn
 deep_sort_realtime
 streamlit-autorefresh
+fastapi
+streamlit

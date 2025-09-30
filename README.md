@@ -1,83 +1,116 @@
-# Gestão Automatizada de Pátios Mottu
+# Gestão Automatizada de Pátios – Mottu
 
-## Apresentação do Problema Real
-A Mottu enfrenta um desafio considerável na organização e gestão eficiente de seus pátios. Atualmente, a localização das motos é monitorada manualmente, o que representa um processo demorado e sujeito a erros. Automatizar e digitalizar este sistema é essencial para melhorar a eficiência operacional, reduzir o tempo de busca de motos específicas e minimizar os erros de localização.
-
-## Justificativa para o Uso das Tecnologias
-Escolhemos usar câmeras e sensores RFID devido ao equilíbrio favorável que essas tecnologias oferecem entre custo e precisão. Na análise de custo-benefício, essas soluções se destacaram não apenas pelo investimento inicial relativamente baixo, mas também pela facilidade de implementação em relação às necessidades complexas do pátio da Mottu. Considerando-se esses fatores, essa combinação oferece uma solução robusta e eficiente.
-
-## Tecnologias Utilizadas
-
-- Visão Computacional: Utilizada para identificar motos estacionadas em diferentes áreas do pátio e para monitorar se as vagas estão ocupadas, garantindo precisão no mapeamento digital do pátio.
-- Etiquetas e Sensores RFID: Os sensores serão posicionados em zonas estratégicas do pátio, como entradas, saídas, áreas designadas para reparos leves, depósitos de carcaças, e zonas para motos sem placa. Eles permitirão um controle granular do movimento e localização das motos.
-
-## Funcionamento dos Componentes-Chave
-A solução opera integrando diferentes tecnologias para um resultado coeso:
-
-- *Rastreamento através de RFID:* As etiquetas RFID, associadas a sensores localizados em pontos-chave, fornecem um histórico detalhado da movimentação das motos no pátio, facilitando o rastreamento eficiente.
-- *Integração Câmera-Sensor:* Quando uma moto passa por uma sensor de estacionamento, seu ID é registrado e enviado para o sistema integrado à câmera. Isso permite identificar e registrar qual moto é estacionada em determinada vaga, atualizando seu status no mapa digital com dados como {ID:X, Vaga:X, Zona:X}. Assim, cada ação de ocupação e desocupação de vagas é automaticamente registrada e atualizada no sistema.
-
-## Viabilidade Técnica Inicial do Projeto
-Nossa solução se destaca por sua viabilidade técnica. A instalação de câmeras e sensores em locais estratégicos configura um processo relativamente simples. A instalação de dispositivos RFID em todas as motos é um desafio, mas absolutamente crucial para garantir precisão e eficácia no rastreamento automatizado. O alcance dessa precisão otimiza a gestão operacional do pátio e reduz significadamente erros de localização. Acreditamos que, com os passos adequados de implementação, esta solução proporcionará benefícios significativos para a operação da Mottu.
+link do vído no YouTube: https://youtu.be/dWUZyVhUMdw
 
 
-## Estrutura do diretótrio
+## 🎯 Apresentação do Problema
+A Mottu enfrenta um grande desafio na **gestão e organização de seus pátios**. Atualmente, a localização das motos é feita de forma **manual**, o que gera:
+- Processos demorados  
+- Alto risco de erros  
+- Dificuldade em encontrar rapidamente uma moto específica  
 
+A proposta deste projeto é **automatizar e digitalizar** esse sistema, integrando **visão computacional e sensores RFID** para aumentar a **eficiência operacional** e reduzir falhas.
+
+---
+
+## ✅ Justificativa para o Uso das Tecnologias
+- **Câmeras + YOLOv8** → permitem detectar e monitorar motos de forma automática e em tempo real, com baixo custo de instalação  
+- **Sensores RFID** → garantem rastreamento preciso de entrada/saída, movimentação entre zonas e histórico de cada moto  
+- **Integração API + Dashboard** → centraliza os dados em um sistema único, acessível e confiável  
+
+Essa combinação entrega uma solução **escalável, precisa e de custo viável**.
+
+---
+
+## 🛠 Tecnologias Utilizadas
+- **Visão Computacional (YOLOv8 + OpenCV)**: detecção de motos em vídeos/câmeras  
+- **Streamlit**: dashboard interativo para monitoramento em tempo real  
+- **FastAPI**: API backend para centralizar dados de visão e RFID  
+- **SQLite**: banco de dados leve para registro histórico de eventos  
+- **RFID**: sensores instalados em pontos estratégicos do pátio  
+
+---
+
+## 🔄 Funcionamento da Solução
+1. **Detecção por câmera (YOLOv8)**  
+   - Identifica motos nos vídeos e envia dados para a API (`frame_id` + `qtd_motos`)  
+
+2. **Rastreamento por RFID**  
+   - Cada moto possui etiqueta RFID  
+   - Sensores registram eventos em zonas como: entrada, saída, manutenção, depósito  
+
+3. **Integração via API (FastAPI)**  
+   - Recebe eventos da visão computacional e do RFID  
+   - Armazena os dados em banco SQLite  
+
+4. **Visualização em Dashboard (Streamlit)**  
+   - Exibe vídeo processado em tempo real  
+   - Mostra gráfico histórico da quantidade de motos detectadas  
+   - Lista eventos de RFID e visão computacional  
+
+---
+
+## 📂 Estrutura do Diretório
+
+``` bash
+   ├── dashboard/             # Interface Streamlit
+   │   └── dashboard.py
+   ├── api/                   # API FastAPI
+   │   ├── main.py            # Rotas principais
+   │   ├── crud.py            # Operações no banco
+   │   ├── database.py        # Conexão e criação de tabelas
+   │   ├── models.py          # Modelos Pydantic
+   ├── vision/                # Visão computacional
+   │   ├── App.py             # Script principal de visão e envio para API
+   │   └── Data/              # Vídeos de teste
+   │       └── vid4.mp4
+   ├── motos.db               # Banco SQLite
+   ├── requirements.txt       # Dependências do projeto
+   └── yolov8n.pt             # Pesos pré-treinados YOLOv8 (nano)
 ```
-├── App.py # Script principal para execução
-├── dados/ # Diretório contendo os vídeos para processamento
-│ └── vid1.mp4 # Exemplo de vídeo
-├── requirements.txt # Arquivo de dependências
-└── yolov5s.pt # Pesos pré-treinados do modelo YOLOv5
-```
 
-## Passos para Configuração e Execução
-### Instalação de Dependências:
-Clone o repositório
-```
+---
+
+## ⚙️ Passos para Configuração e Execução
+
+### 1. Clone o repositório
+```bash
    git clone https://github.com/GThomaz03/challenge-IoT
    cd challenge-IoT
 ```
 
-Crie e ative um ambiente virtual
-
+## 2. Crie e ative um ambiente virtual
 Windows:
-```
+```bash
    python -m venv venv
-   venv/Scripts/activate
+   venv\Scripts\activate
 ```
 
-Linux/macOS
-```
+Linux/macOS:
+```bash
    python3 -m venv venv
    source venv/bin/activate
 ```
 
-Assegure que você está no diretório raiz do projeto e execute:
-```
+## 3. Instale dependências
+```bash
    pip install -r requirements.txt
 ```
 
-Caso não tenha o Yolov5s intalado em sua máquina, execute:
+## 4. Inicie a API (FastAPI)
+```bash
+   uvicorn backend-api.main:app --reload
 ```
-   git clone https://github.com/ultralytics/yolov5
-   cd yolov5
-   pip install -r requirements.txt
-```
+A API estará disponível em: http://localhost:8000
 
-Executar o Programa:
-
-Para rodar a aplicação principal, utilize o comando:
-```
-   cd ..
-   python App.py
+## Inicie o Dashboard (Streamlit)
+``` bash
+   streamlit run dashboard/dashboard.py
 ```
 
-Certifique-se de que o arquivo de vídeo vid4.mp4 está presente na pasta dados, ou ajuste o código no App.py para utilizar qualquer outro vídeo de sua escolha.
+---
 
-### Observações:
-
-Certifique-se de que o arquivo yolov5s.pt está no mesmo diretório para que o modelo possa ser carregado corretamente.
-
-O script processará o vídeo e apresentará a detecção de motos em tempo real.
-
+🖼 Observações
+   - Certifique-se de ter o modelo yolov8n.pt na raiz do projeto (ou ajuste o caminho no código)
+   - O script processa os vídeos da pasta vision/Data e envia os dados para a API
+   - O dashboard mostra vídeo, gráfico histórico e lista de motos detectadas em tempo real

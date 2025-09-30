@@ -3,11 +3,13 @@ import cv2
 from PIL import Image
 import time
 import pandas as pd
+import requests
 from ultralytics import YOLO
 
 # ================== CONFIGURAÇÃO ==================
 VIDEO_PATH = "vision/Data/vid4.mp4"
 YOLO_MODEL = "yolov8s.pt"  # YOLOv8
+API_URL = "http://localhost:8000/visao/registrar"  # URL da sua API
 
 st.set_page_config(page_title="Mottu Dashboard", layout="wide")
 st.title("📊 Dashboard de Monitoramento – Mottu")
@@ -35,7 +37,7 @@ while cap.isOpened():
         break
 
     # ================== DETECÇÃO ==================
-    results = model(frame)[0]
+    results = model(frame, verbose=False)[0]
 
     # pega o id da classe "motorcycle"
     motorcycle_id = [k for k, v in results.names.items() if v == "motorcycle"][0]
@@ -62,6 +64,13 @@ while cap.isOpened():
     # ================== ATUALIZA HISTÓRICO ==================
     st.session_state.historico_motos.append(contador)
 
+    # Envia dados para API
+    try:
+        payload = {"frame_id": frame_id, "qtd_motos": contador}
+        requests.post(API_URL, json=payload, timeout=1)
+    except Exception as e:
+        st.error(f"Erro ao enviar dados para API: {e}")
+
     # DataFrame para gráfico
     df_visao = pd.DataFrame({"qtd_motos": st.session_state.historico_motos})
 
@@ -83,6 +92,7 @@ while cap.isOpened():
         else:
             st.info("Nenhuma moto detectada neste frame")
 
+    frame_id += 1
     time.sleep(0.05)  # ~20 FPS
 
 cap.release()
