@@ -1,7 +1,3 @@
-Perfeito 👍 Aqui está a **versão atualizada e completa do README** do projeto, refletindo **a integração com a API MottuMap, autenticação, visão computacional, dashboard e banco Oracle**, de acordo com o estágio atual do sistema.
-
----
-
 # 🚀 Gestão Automatizada de Pátios – MottuMap
 
 🎥 **Demonstração:** [https://youtu.be/OXw7AyHvTEk](https://youtu.be/OXw7AyHvTEk)
