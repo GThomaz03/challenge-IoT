@@ -132,19 +132,11 @@ challenge-iot
 ### 1️⃣ Clone o repositório
 
 ```bash
-git clone https://github.com/GThomaz03/mottumap
+git clone https://github.com/GThomaz03/challenge-IoT
 cd mottumap
 ```
 
-### 2️⃣ Configure e inicie a API Java
-
-```bash
-mvn spring-boot:run
-```
-
-> API disponível em: **[http://localhost:8080](http://localhost:8080)**
-
-### 3️⃣ Crie e ative o ambiente Python
+### 2️⃣ Crie e ative o ambiente Python
 
 Windows:
 
@@ -160,13 +152,13 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 4️⃣ Instale as dependências
+### 3️⃣ Instale as dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5️⃣ Inicie a visão computacional
+### 4️⃣ Inicie a visão computacional
 
 ```bash
 python vision/App.py
@@ -174,7 +166,7 @@ python vision/App.py
 
 > As motos detectadas serão automaticamente registradas e removidas na API.
 
-### 6️⃣ Execute o dashboard
+### 5️⃣ Execute o dashboard
 
 ```bash
 streamlit run dashboard/dashboard.py
@@ -217,6 +209,3 @@ streamlit run dashboard/dashboard.py
 
 O **MottuMap** integra **IA, visão computacional e APIs corporativas** para oferecer uma **gestão de pátio 100% automatizada**, com dados centralizados, segurança e escalabilidade — alinhada à visão de eficiência e tecnologia da Mottu.
 
----
-
-Quer que eu adicione um diagrama (ex: fluxo de dados entre YOLO → API → Dashboard → Banco Oracle) no README também? Isso deixaria o relatório mais completo e visual.
