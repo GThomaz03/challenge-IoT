@@ -1,62 +1,93 @@
-# Gestão Automatizada de Pátios – Mottu
-
-link do vído no YouTube: https://youtu.be/dWUZyVhUMdw
-
-## Integrantes
- - Eduardo Guilherme Dias- RM557886
- - Gabriel Alves Thomaz - RM558637
- - Luiz Sadao Kamada - RM557652
-
-## 🎯 Apresentação do Problema
-A Mottu enfrenta um grande desafio na **gestão e organização de seus pátios**. Atualmente, a localização das motos é feita de forma **manual**, o que gera:
-- Processos demorados  
-- Alto risco de erros  
-- Dificuldade em encontrar rapidamente uma moto específica  
-
-A proposta deste projeto é **automatizar e digitalizar** esse sistema, integrando **visão computacional e sensores RFID** para aumentar a **eficiência operacional** e reduzir falhas.
+Perfeito 👍 Aqui está a **versão atualizada e completa do README** do projeto, refletindo **a integração com a API MottuMap, autenticação, visão computacional, dashboard e banco Oracle**, de acordo com o estágio atual do sistema.
 
 ---
 
-## ✅ Justificativa para o Uso das Tecnologias
-- **Câmeras + YOLOv8** → permitem detectar e monitorar motos de forma automática e em tempo real, com baixo custo de instalação  
-- **Sensores RFID** → garantem rastreamento preciso de entrada/saída, movimentação entre zonas e histórico de cada moto  
-- **Integração API + Dashboard** → centraliza os dados em um sistema único, acessível e confiável  
+# 🚀 Gestão Automatizada de Pátios – MottuMap
 
-Essa combinação entrega uma solução **escalável, precisa e de custo viável**.
+🎥 **Demonstração:** [https://youtu.be/OXw7AyHvTEk](https://youtu.be/OXw7AyHvTEk)
 
 ---
 
-## 🛠 Tecnologias Utilizadas
-- **Visão Computacional (YOLOv8 + OpenCV)**: detecção de motos em vídeos/câmeras  
-- **Streamlit**: dashboard interativo para monitoramento em tempo real  
-- **FastAPI**: API backend para centralizar dados de visão e RFID  
-- **SQLite**: banco de dados leve para registro histórico de eventos  
-- **RFID**: sensores instalados em pontos estratégicos do pátio  
+## 👥 Integrantes
+
+- **Eduardo Guilherme Dias** – RM557886
+- **Gabriel Alves Thomaz** – RM558637
+- **Luiz Sadao Kamada** – RM557652
 
 ---
 
-## 🔄 Funcionamento da Solução
-1. **Detecção por câmera (YOLOv8)**  
-   - Identifica motos nos vídeos e envia dados para a API (`frame_id` + `qtd_motos`)  
+## 🎯 Desafio
 
-2. **Rastreamento por RFID**  
-   - Cada moto possui etiqueta RFID  
-   - Sensores registram eventos em zonas como: entrada, saída, manutenção, depósito  
+A **Mottu** enfrenta dificuldades na **gestão manual dos pátios de motos**, gerando:
 
-3. **Integração via API (FastAPI)**  
-   - Recebe eventos da visão computacional e do RFID  
-   - Armazena os dados em banco SQLite  
+- Processos lentos e imprecisos
+- Alto risco de erro humano
+- Dificuldade em localizar rapidamente uma moto específica
 
-4. **Visualização em Dashboard (Streamlit)**  
-   - Exibe vídeo processado em tempo real  
-   - Mostra gráfico histórico da quantidade de motos detectadas  
-   - Lista eventos de RFID e visão computacional  
+O projeto **MottuMap** automatiza esse processo, combinando:
+
+- **Visão computacional** (detecção automática de motos)
+- **Sensores inteligentes** (RFID e visão)
+- **API central Java + Dashboard interativo**
+
+Essa integração permite o **monitoramento em tempo real**, com **registro e exclusão automáticos de motos** conforme entram e saem do campo de visão.
 
 ---
 
-## 📂 Estrutura do Diretório
+## 🧠 Solução Proposta
 
-``` bash
+| Componente                    | Função                                            |
+| ----------------------------- | ------------------------------------------------- |
+| **YOLOv8 + OpenCV**           | Detecta motos em vídeo ao vivo e envia para a API |
+| **API Java (Spring Boot)**    | Centraliza o registro, histórico e autenticação   |
+| **Dashboard (Streamlit)**     | Monitora em tempo real o vídeo e os dados da API  |
+| **Banco Oracle**              | Armazena motos, históricos, sensores e zonas      |
+| **Autenticação (Basic Auth)** | Define permissões de acesso entre ADMIN e USER    |
+
+---
+
+## 🔒 Perfis e Permissões
+
+| Email           | Senha  | Role (permissão)      |
+| --------------- | ------ | --------------------- |
+| admin@mottu.com | 123456 | ADMIN (CRUD completo) |
+| user@mottu.com  | 123456 | USER (apenas GET)     |
+
+Todas as requisições da visão e do dashboard passam por autenticação **Basic Auth** antes de acessar a API.
+
+---
+
+## ⚙️ Fluxo de Funcionamento
+
+1. **Detecção por câmera (YOLOv8)**
+
+   - O script `App.py` identifica motos no vídeo e gera dados realistas:
+
+     - Placa no formato Mercosul (`ABC1D23`)
+     - Chassi com 17 caracteres alfanuméricos
+     - Modelo (ex: “CG 160”, “Pop 110”, “YBR 125”)
+
+2. **Integração com API MottuMap**
+
+   - Quando uma moto é detectada:
+
+     - Envia requisição `POST /api/motos` → cria a moto no banco Oracle
+     - Envia `POST /api/historicos` → registra o evento e posição atual
+
+   - Quando a moto sai da tela, ela é removida automaticamente do banco via `DELETE /api/motos/{id}`
+
+3. **Visualização no Dashboard (Streamlit)**
+
+   - Mostra vídeo com detecção em tempo real
+   - Exibe gráficos e lista de motos detectadas
+   - Atualiza contadores e status de cada zona do pátio
+
+---
+
+## 🧩 Estrutura do Projeto
+
+```bash
+challenge-iot
    ├── dashboard/             # Interface Streamlit
    │   └── dashboard.py
    ├── api/                   # API FastAPI
@@ -75,46 +106,117 @@ Essa combinação entrega uma solução **escalável, precisa e de custo viável
 
 ---
 
-## ⚙️ Passos para Configuração e Execução
+## 🛠 Tecnologias Utilizadas
 
-### 1. Clone o repositório
-```bash
-   git clone https://github.com/GThomaz03/challenge-IoT
-   cd challenge-IoT
-```
+### 🧠 Inteligência Artificial
 
-## 2. Crie e ative um ambiente virtual
-Windows:
-```bash
-   python -m venv venv
-   venv\Scripts\activate
-```
+- **YOLOv8 (Ultralytics)** – detecção de motos em tempo real
+- **OpenCV** – processamento de frames
 
-Linux/macOS:
-```bash
-   python3 -m venv venv
-   source venv/bin/activate
-```
+### 🌐 Backend
 
-## 3. Instale dependências
-```bash
-   pip install -r requirements.txt
-```
+- **Java (Spring Boot)**
+- **JPA / Hibernate**
+- **Banco Oracle**
+- **Autenticação Basic Auth**
 
-## 4. Inicie a API (FastAPI)
-```bash
-   uvicorn backend-api.main:app --reload
-```
-A API estará disponível em: http://localhost:8000
+### 📊 Frontend / Dashboard
 
-## Inicie o Dashboard (Streamlit)
-``` bash
-   streamlit run dashboard/dashboard.py
-```
+- **Streamlit** – interface de monitoramento
+- **Python (requests, matplotlib)**
 
 ---
 
-🖼 Observações
-   - Certifique-se de ter o modelo yolov8n.pt na raiz do projeto (ou ajuste o caminho no código)
-   - O script processa os vídeos da pasta vision/Data e envia os dados para a API
-   - O dashboard mostra vídeo, gráfico histórico e lista de motos detectadas em tempo real
+## ⚙️ Como Executar o Projeto
+
+### 1️⃣ Clone o repositório
+
+```bash
+git clone https://github.com/GThomaz03/mottumap
+cd mottumap
+```
+
+### 2️⃣ Configure e inicie a API Java
+
+```bash
+mvn spring-boot:run
+```
+
+> API disponível em: **[http://localhost:8080](http://localhost:8080)**
+
+### 3️⃣ Crie e ative o ambiente Python
+
+Windows:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+Linux/macOS:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 4️⃣ Instale as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5️⃣ Inicie a visão computacional
+
+```bash
+python vision/App.py
+```
+
+> As motos detectadas serão automaticamente registradas e removidas na API.
+
+### 6️⃣ Execute o dashboard
+
+```bash
+streamlit run dashboard/dashboard.py
+```
+
+> Acesse no navegador: [http://localhost:8501](http://localhost:8501)
+
+---
+
+## 🧾 Exemplo de Registro Automático
+
+| Evento               | Endpoint          | Método | Exemplo                                                                     |
+| -------------------- | ----------------- | ------ | --------------------------------------------------------------------------- |
+| Moto detectada       | `/api/motos`      | POST   | `{ "placa": "BRA2A19", "chassi": "9C2JC4110LR000001", "modelo": "CG 160" }` |
+| Histórico registrado | `/api/historicos` | POST   | `{ "motoId": 1, "posicao": 3, "zonaId": 1, "sensorId": 2 }`                 |
+| Moto removida        | `/api/motos/{id}` | DELETE | —                                                                           |
+
+---
+
+## 📈 Benefícios
+
+- Redução de erros humanos
+- Monitoramento em tempo real
+- Integração direta com o banco de dados da Mottu
+- Automação completa do registro de entrada e saída
+- Arquitetura escalável e segura com autenticação
+
+---
+
+## 🔮 Possíveis Extensões Futuras
+
+- Implementar reconhecimento de placas reais (OCR)
+- Integrar com câmeras IP ao vivo
+- Mapa interativo do pátio com posições em tempo real
+- Relatórios analíticos de fluxo de motos
+
+---
+
+## 🧩 Conclusão
+
+O **MottuMap** integra **IA, visão computacional e APIs corporativas** para oferecer uma **gestão de pátio 100% automatizada**, com dados centralizados, segurança e escalabilidade — alinhada à visão de eficiência e tecnologia da Mottu.
+
+---
+
+Quer que eu adicione um diagrama (ex: fluxo de dados entre YOLO → API → Dashboard → Banco Oracle) no README também? Isso deixaria o relatório mais completo e visual.
